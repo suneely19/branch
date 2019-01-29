@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="url" value="jdbc:mysql://localhost:3306/telecom"/>
+		<property name="username" value="root"/>
+		<property name="password" value="root"/>
+	</bean>
+	<bean id="namedParameterJdbcTempplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg ref="dataSource"/>
+	</bean>
+	<bean id="telecommunicationDao" class="com.telecommunication.dao.TelecommunicationDaoImpl">
+		<property name="namedParameterJdbcTempplate" ref="namedParameterJdbcTempplate"/>
+	</bean>	  
+	<bean id="telecommunicationTRAIDao" class="com.telecommunication.dao.TelecommunicationTRAIDaoImpl">
+		<property name="namedParameterJdbcTemplate" ref="namedParameterJdbcTempplate"/>
+	</bean>   
+	<bean id="telecommunicationPersonDao" class="com.telecommunication.dao.TelecommunicationPersonDaoImpl">
+		<property name="namedParameterJdbcTemplate" ref="namedParameterJdbcTempplate"/>
+	</bean>
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+</beans>
